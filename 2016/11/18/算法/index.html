@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>算法学习 | 张伟的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">算法学习</h1><a id="logo" href="/.">张伟的博客</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">算法学习</h1><div class="post-meta">Nov 18, 2016<span> | </span><span class="category"><a href="/categories/技术/">技术</a></span></div><div class="post-content"><p>直接插入排序法</p>
+<blockquote>
+<p><strong>基本思想:</strong> 再要排序的数组中，假设前面的n-1（n&gt;=2）个数已经是排号顺序的。现在要把第n个数插入到前面的有序数组中，使得这n个数也是排好序的，如此循环直到全部排序完成。<br><br><strong>时间复杂度:</strong> 时间复杂度  O（n<em>n） ，空间复杂度O(1)<br><br><strong>结构的复杂性及适用情况:</strong> 是一种简单的排序算法。不仅适合顺序存储结构（数组），而且适合连接存储结构（链表），只不过连接存储结构不用在移动数据只需要移动指针。<br><br><em>*哨兵</em></em> 算法中引入的附加记录R[0] 成为监视哨、哨兵（Sentinel）<br><br>作用1：进入循环查找之前记录保存了R[i]的副本。使后来不至于因记录后移而丢失数据<br><br>作用2：可以监视j的数据。如果一单j的数据小鱼了哨兵位置数据马上停止循环。<br>思考1:一切为了简化边界条件而引入的结点能成为哨兵。哨兵使得循环次数大为减少</p>
+</blockquote>
+<p>` </p>
+<pre><code>public static void straightInsertionSort(int[] array) {
+
+    //哨兵
+    int sentinel, j;
+
+    //循环
+    for (int i = 1; i &lt; array.length; i++) {
+        j = i - 1;
+
+        // 哨兵位 
+        sentinel = array[i];
+
+        //找到当前哨兵位置数据的位置
+        while (j &gt;= 0 &amp;&amp; sentinel &lt; array[j]) {
+            array[j + 1] = array[j];// 将大于sentinel的值整体后移一个单位
+            j--;
+        }
+
+        //进行赋值
+        array[j + 1] = sentinel;
+    }
+}
+</code></pre><p>`</p>
+<h4 id="冒泡排序法"><a href="#冒泡排序法" class="headerlink" title="冒泡排序法"></a>冒泡排序法</h4><blockquote>
+<p><strong>基本思路：</strong>比较相邻的两个元素大小，如果第一个比第二个大交换两个元素位置<br><br><strong>时间复杂度：</strong> O(n*n)<br>思想1 里层循环只负责把最大的数放到里层循环的末尾。外层循环控制负责没里层做完<br>一次循环减少元素个数</p>
+</blockquote>
+<p>`</p>
+<pre><code>public void sort(int[] a){
+    int temp = 0;
+    for (int i = a.length - 1; i &gt; 0; --i){
+        for (int j = 0; j &lt; i; ++j){
+            if (a[j + 1] &lt; a[j]){
+                temp = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = temp;
+            }
+        }
+    }
+}
+</code></pre><p>`</p>
+<p>###快速排序###</p>
+<blockquote>
+<p><strong><em>基本思想：</em></strong> 选择一个基准元素，通常选择第一个元素或者选择最后一个元素。通过一次扫描<br>将带排序的数组分为两部分，一部分比基准元素小，一部分比基准元素大或者相等。此时基准元素<br>正好在排好序的位置。然后在用递归方法排序划分的两个部分。<br><br><img src="http://i.imgur.com/xXjDE1m.png" alt=""><br></p>
+<p><strong><em>时间复杂度：</em></strong> 最理想 O(nlogn) 最差时间O(n^2)<br><br><strong><em>说明：</em></strong> 快速排序是对冒泡排序的一种改进。最理想的就是每次选择的是正好中间的数据。<br>最差时间就是冒泡排序</p>
+</blockquote>
+<p>####堆排序####</p>
+<blockquote>
+<p><strong>什么是堆：</strong> 一种数据结构，堆可以视为一颗完全二叉树<br>（除了底层之外每一层都是满的），可以采用数组来表示堆（完全二叉树）<br><br><strong>分类：</strong> 最大堆、最小堆。最大堆父节点大于或者等于每个子节点，<br>树中最大数出现在根结点。最小堆相反。<br><br><strong>节点与数组索引的关系:</strong> parent(i)    left=(2i) right=(2i+1)<br><img src="http://i.imgur.com/eHhNnnr.png" alt=""></p>
+</blockquote>
+<p><strong><em>初始化最大堆</em></strong>     </p>
+<blockquote>
+<p>得到无序初始化堆<br><br>a[]={16,7,3,20,17,8}<br><br><img src="http://i.imgur.com/Vyrmoya.jpg" alt=""></p>
+<p>初始化过程从最后一个结点开始调整<br><br><img src="http://i.imgur.com/CFlzcXJ.jpg" alt=""><img src="http://i.imgur.com/GBXF3qt.jpg" alt=""><img src="http://i.imgur.com/qGYd7VB.jpg" alt=""><img src="http://i.imgur.com/D0FDG4i.jpg" alt=""><br><br><strong><em>初始化总结:</em></strong> 每次调整都是从父节点、左孩子结点、右孩子结点三者中选择最大的<br>跟父节点进行交换，每次交换后需要重新对被交换的孩子节点进行调整。<br><br><strong><em>堆的插入删除:</em></strong> 整体概括<img src="http://i.imgur.com/ap5wudw.jpg" alt=""><br><br><strong><em>堆插入：</em></strong>每次都是将新数据放到数组的最后。可以发现插入新数据前这个数组是个有序数组，<br>这样新插入堆元素可以使用 直接插入算法变种算法，我只需要比较当前插入数据和父的关系，<br>进行数据交换。<br><br><strong><em>堆删除：</em></strong> 堆的删除只能删除堆顶数据，然后把最后一个数据放到堆顶（这样的操作是为了<br>快速构件出新的堆结构），然后执行自上而下的比较。<br><br><strong><em>时间复杂度计算：</em></strong> 每次修正的时间复杂度是O(logN),初始化堆的时间复杂度是O(N*logN)。<br>所以最后整个堆的时间复杂度 M*logM +(N-M)*log(N-M)  一般M比较小，所以整个堆排序的时间复杂度是 N*logN</p>
+</blockquote>
+<pre><code>public class MyHeapSort {
+    private static int[] sort = new int[] { 1, 0, 10, 20, 3, 5, 6, 4, 9, 8, 12,
+            17, 34, 11 };
+
+    public static void main(String[] args) {
+        buildMaxHeapify(sort);
+    }
+
+    /**
+     * 得到左孩子节点下标
+     * 
+     * @param index
+     * @return
+     */
+    public static int getLeftChild(int index){
+        return (index&lt;&lt;1)+1;
+    }
+
+    /**
+     * 
+     * 得到右孩子节点下标
+     * @param index
+     * @return
+     */
+    public static int getRightChild(int index){
+        return (index&lt;&lt;1)+2;
+    }
+
+    /**
+     * 得到父节点
+     * 
+     * @param index
+     * @return
+     */
+    public static int getParent(int index){
+        return (index-1)&gt;&gt;1;
+    }
+
+    /**
+     * 每次递归都是一棵小树比较
+     * 包括比较时边界的限定
+     * 
+     * @param heap
+     */
+    public static void initHeap(int[] heap,int heapSize,int lastParent){
+
+        //当前节点位置最大
+        int max = lastParent;
+        int left = getLeftChild(lastParent);
+        int right = getRightChild(lastParent);
+
+
+
+        //不能交换值 只能交换位置
+        if(left&lt;heapSize&amp;&amp;heap[max]&lt;heap[left]){
+            max = left;
+        }
+        if(right&lt;heapSize&amp;&amp;heap[max]&lt;heap[right]){
+            max = right;
+        }
+
+        // 交换值，把叶子节点为父的树从新排序
+        if(heap[lastParent] != heap[max]){
+            int temp = heap[lastParent];
+            heap[lastParent] = heap[max];
+            heap[max] = temp;
+
+            //这个递归是为了交换后下面子树的顺序维护
+            initHeap(heap,heapSize,max);
+        }
+    }
+
+    //得到最后一个元素的父节点进行比较
+    public static void buildMaxHeapify(int[] heap){
+        int last = heap.length-1;
+        int lastParent = getParent(last);
+        for(int i=lastParent;i&gt;=0;i--){
+            initHeap(heap,heap.length,i);
+        }
+        for(int aa:heap){
+            System.out.println(aa);
+        }
+    }
+}
+</code></pre><p>####BitMap####</p>
+<blockquote>
+<p><strong><em>基本思想：</em></strong> 使用bit来标记数据一个bit位对应一个数。<br>以前的一个整数占用空间4个字节32bit。现在一个整数一个bit。用来排序的<br><br><strong><em>百度百科例子：</em></strong> 假设我们要对0-7内的5个元素(4,7,2,5,3)排序<br>（这里假设这些元素没有重复）。那么我们就可以采用Bit-map的方法来达到排序的目的。<br>要表示8个数，我们就只需要8个Bit（1Bytes），首先我们开辟1Byte的空间，<br>将这些空间的所有Bit位都置为0。<br>然后遍历这5个元素，首先第一个元素是4，<br>那么就把4对应的位置为1（可以这样操作 p+(i/8)|(0×01&lt;&lt;(i%8))<br>当然了这里的操作涉及到Big-ending和Little-ending的情况，<br>这里默认为Big-ending）,因为是从零开始的，所以要把第五位置为1。<br>然后再处理第二个元素7，将第八位置为1,，接着再处理第三个元素，<br>一直到最后处理完所有的元素，将相应的位置为1。<br>然后我们现在遍历一遍Bit区域，将该位是一的位的编号输出（2，3，4，5，7），<br>这样就达到了排序的目的。实就是把计数排序用的统计数组的每个单位缩小成bit级别的布尔数组<br><br><strong><em>缺点不足：</em></strong> 无法对重复的数据进行排序和查找<br><br><strong><em>map映射表：</em></strong> 重点是把十进制转换成二进制bit,所以需要一个映射表，创建一个数组，<br>数组的每一位代表4byte 32bit。能够表示32个整数。<br><br><strong><em>位移转换：</em></strong>index_loc = N / 32即可，index_loc即为n对应的数组下标。<br>例如n = 76, 则loc = 76 / 32 = 2,因此76在a[2]中。<br>求十进制数0-N对应的bit位(数组中的位移) bit_loc = N % 32即可，<br>例如 n = 76, bit_loc = 76 % 32 = 12 </p>
+</blockquote>
+</div><div class="tags"><a href="/tags/算法/">算法</a></div><div class="post-nav"><a href="/2016/11/18/linux-study/" class="pre">linux学习</a><a href="/2016/09/26/jenkins/" class="next">持续集成-Jenkins</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://zw6234336.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计/">设计</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/java基础/" style="font-size: 15px;">java基础</a> <a href="/tags/读书/" style="font-size: 15px;">读书</a> <a href="/tags/git/" style="font-size: 15px;">git</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/Mybatis/" style="font-size: 15px;">Mybatis</a> <a href="/tags/Mysql/" style="font-size: 15px;">Mysql</a> <a href="/tags/redis/" style="font-size: 15px;">redis</a> <a href="/tags/文件存储/" style="font-size: 15px;">文件存储</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/java-hashmap/" style="font-size: 15px;">java hashmap</a> <a href="/tags/jenkins/" style="font-size: 15px;">jenkins</a> <a href="/tags/eclipse-svn/" style="font-size: 15px;">eclipse-svn</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/业务/" style="font-size: 15px;">业务</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/11/07/jetty/">svn</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/07/JavaNaming/">JAVA实用命名规则</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/07/HttpClientPool/">org.apache.commons.httpclient学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/07/demete/">Demeter</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/07/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/30/redWar/">抢红包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/how-hashmap-works-in-java/">How hashmap works in java</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/28/FastDFS/">FastDFS分布式存储</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/13/SLF4J-manual/">SLF4J日志文档翻译</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/linux-study/">linux学习</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2017 <a href="/." rel="nofollow">张伟的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
